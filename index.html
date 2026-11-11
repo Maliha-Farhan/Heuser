@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Memory Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== START SCREEN ===== -->
+  <div id="start-screen" class="overlay">
+    <div class="overlay-card">
+      <h1>🧠 Pattern Memory</h1>
+      <p class="tagline">How sharp is your memory?</p>
+      <div class="high-score-display">
+        <span>🏆 High Score: <strong id="start-high-score">0</strong></span>
+      </div>
+      <div class="difficulty-picker">
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty">
+          <option value="easy">Easy (3 colors)</option>
+          <option value="medium" selected>Medium (4 colors)</option>
+          <option value="hard">Hard (6 colors)</option>
+        </select>
+      </div>
+      <button id="start-btn" class="btn-start">Start Game</button>
+    </div>
+  </div>
+
+  <!-- ===== TOP CONTROL BAR ===== -->
+  <header id="top-bar" class="hidden">
+    <div id="timer">00:15</div>
+    <div id="counter">
+      <span>Score: <strong id="score-value">0</strong></span>
+      <span class="round-label">Round <strong id="round-value">1</strong>/10</span>
+    </div>
+    <div id="controls">
+      <button id="pause-play" class="btn-icon" title="Pause / Resume">⏸️</button>
+      <button id="main-menu" class="btn-menu" title="Main Menu">☰ Menu</button>
+      <button id="quit" class="btn-quit" title="Quit">✕</button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN GAME AREA ===== -->
+  <main id="game-area" class="hidden">
+
+    <!-- Phase label -->
+    <div id="phase-label">Memorize the pattern!</div>
+
+    <!-- Sequence display (memorization phase) -->
+    <div id="sequence-display"></div>
+
+    <!-- User input (guessing phase) -->
+    <div id="input-container" class="hidden">
+      <p id="input-prompt">Reproduce the pattern:</p>
+      <div id="user-sequence-preview"></div>
+      <div id="color-buttons"></div>
+      <div id="input-actions">
+        <button id="undo-btn" class="btn-secondary" disabled>↩ Undo</button>
+        <button id="submit-btn" class="btn-submit" disabled>Submit</button>
+      </div>
+    </div>
+
+    <!-- Round result flash -->
+    <div id="round-result" class="hidden">
+      <span id="result-icon"></span>
+      <span id="result-text"></span>
+    </div>
+  </main>
+
+  <!-- ===== PAUSE OVERLAY ===== -->
+  <div id="pause-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <h2>⏸️ Paused</h2>
+      <p>Take your time.</p>
+      <button id="resume-btn" class="btn-primary">Resume</button>
+    </div>
+  </div>
+
+  <!-- ===== QUIT CONFIRM OVERLAY ===== -->
+  <div id="quit-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <h2>🚪 Quit Game?</h2>
+      <p>Your progress this round will be lost.</p>
+      <div class="confirm-actions">
+        <button id="quit-confirm" class="btn-quit-confirm">Yes, Quit</button>
+        <button id="quit-cancel" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== END-GAME OVERLAY ===== -->
+  <div id="end-screen" class="overlay hidden">
+    <div class="overlay-card" id="end-card">
+      <h2 id="end-title">Game Over</h2>
+      <p id="end-feedback"></p>
+      <div class="end-stats">
+        <div class="stat-box">
+          <span class="stat-number" id="end-score">0</span>
+          <span class="stat-label">Final Score</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="end-high">0</span>
+          <span class="stat-label">High Score</span>
+        </div>
+      </div>
+      <div id="new-high-score-badge" class="hidden">🎉 New High Score!</div>
+      <button id="play-again-btn" class="btn-start">Play Again</button>
+      <button id="menu-btn" class="btn-secondary">Main Menu</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
