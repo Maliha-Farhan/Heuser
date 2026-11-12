@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rooted Chronicle — Maliha Farhan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient Botanical Leaves -->
+  <div class="botanical-bg" aria-hidden="true">
+    <span class="leaf leaf--1">🌿</span>
+    <span class="leaf leaf--2">🍃</span>
+    <span class="leaf leaf--3">🌱</span>
+    <span class="leaf leaf--4">🍂</span>
+    <span class="leaf leaf--5">🌿</span>
+    <span class="leaf leaf--6">🍃</span>
+    <span class="leaf leaf--7">🌱</span>
+    <span class="leaf leaf--8">🍂</span>
+  </div>
+
+  <!-- Navigation Emblems -->
+  <div class="nav-emblems">
+    <button class="emblem active" data-panel="foundation" aria-label="The Foundation">
+      <span class="emblem__icon">🌸</span>
+      <span class="emblem__label">Foundation</span>
+    </button>
+    <button class="emblem" data-panel="archives" aria-label="The Archives">
+      <span class="emblem__icon">✒️</span>
+      <span class="emblem__label">Archives</span>
+    </button>
+    <button class="emblem" data-panel="horizon" aria-label="The Horizon">
+      <span class="emblem__icon">🧭</span>
+      <span class="emblem__label">Horizon</span>
+    </button>
+  </div>
+
+  <!-- ═════════════════════════════════════════════
+       PANEL 1 — THE FOUNDATION
+       ═════════════════════════════════════════════ -->
+  <section class="panel panel--foundation active" id="panel-foundation">
+    <div class="foundation-layout">
+
+      <!-- Photo — upper-center -->
+      <div class="portrait" id="portrait">
+        <div class="portrait__frame">
+          <img src="maliha.jpg" alt="Maliha Farhan" class="portrait__photo" />
+        </div>
+        <div class="portrait__glow" aria-hidden="true"></div>
+        <div class="portrait__nameplate">Maliha Farhan</div>
+      </div>
+
+      <!-- Bio cards below the photo -->
+      <div class="bio-row">
+        <div class="bio-card bio-card--left">
+          <div class="bio-card__accent"></div>
+          <ul class="detail-list">
+            <li><span class="detail-list__key">Name</span><span class="detail-list__val">Maliha Farhan</span></li>
+            <li><span class="detail-list__key">Age</span><span class="detail-list__val">17</span></li>
+            <li><span class="detail-list__key">Religion</span><span class="detail-list__val">Islam</span></li>
+          </ul>
+        </div>
+        <div class="bio-card bio-card--right">
+          <div class="bio-card__accent"></div>
+          <ul class="detail-list">
+            <li><span class="detail-list__key">O-Levels</span><span class="detail-list__val">Nakhlah School</span></li>
+            <li><span class="detail-list__key">A-Levels</span><span class="detail-list__val">Heuser College</span></li>
+            <li><span class="detail-list__key">Career Path</span><span class="detail-list__val">Software Engineer</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════════
+       PANEL 2 — THE ARCHIVES
+       ═════════════════════════════════════════════ -->
+  <section class="panel panel--archives" id="panel-archives">
+    <div class="archives-layout">
+
+      <div class="parchment parchment--skills">
+        <div class="parchment__title">The Archives</div>
+        <div class="archive-grid">
+
+          <div class="archive-card">
+            <div class="archive-card__heading">Skills & Recognition</div>
+            <div class="badge-row">
+              <span class="badge" data-caption="Native-level fluency">🗣️ English Fluency</span>
+              <span class="badge" data-caption="Competitive debater">⚖️ Debating</span>
+              <span class="badge" data-caption="Effective pedagogy">🎓 Teaching</span>
+              <span class="badge" data-caption="Head Girl — OI">👑 Head Girl</span>
+              <span class="badge" data-caption="Web development">🌐 HTML</span>
+              <span class="badge" data-caption="Reliable & disciplined">🎯 Responsibility</span>
+              <span class="badge" data-caption="Multi-project handling">📋 Task Management</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <div class="archive-card__heading">Awards</div>
+            <div class="badge-row">
+              <span class="badge badge--gold" data-caption="Consistent academic excellence">🏅 20+ High-Achiever Awards</span>
+              <span class="badge badge--gold" data-caption="Creative writing competition">🥉 3rd — Creative Writing</span>
+            </div>
+          </div>
+
+          <div class="archive-card">
+            <div class="archive-card__heading">Personal Dedication</div>
+            <ul class="contribution-list">
+              <li>Managing Excel data tables for her father's business</li>
+              <li>Assisting her mother with university assignments</li>
+              <li>Daily tutoring sessions for her younger sister</li>
+              <li>Balancing household chores with academics</li>
+              <li>Online HTML summer course — self-taught</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════════
+       PANEL 3 — THE STORY & HORIZON
+       ═════════════════════════════════════════════ -->
+  <section class="panel panel--horizon" id="panel-horizon">
+    <div class="horizon-layout">
+
+      <!-- Aspiration Story -->
+      <div class="parchment parchment--story">
+        <div class="parchment__title">The Story & Horizon</div>
+        <blockquote class="aspiration-quote">
+          <div class="aspiration-quote__mark">"</div>
+          <p class="aspiration-quote__text">
+            When I was born, my grandmother's words ignited a fire within me.
+            Since that day, I have been determined to prove that
+            <em>girls are no less than boys</em>&hairsp;— through academics,
+            horse-riding while observing parda, driving, supporting my family,
+            and preparing for studies abroad. Every achievement is a step closer
+            to that truth.
+          </p>
+          <cite class="aspiration-quote__cite">— Maliha Farhan</cite>
+        </blockquote>
+      </div>
+
+      <!-- Homework 7 Gateway -->
+      <div class="parchment parchment--gateway">
+        <div class="envelope">
+          <div class="envelope__seal">📜</div>
+          <p class="envelope__label">A Gateway to Previous Work</p>
+          <a href="https://maliha-farhan.github.io/Heuser/" target="_blank" rel="noopener noreferrer" class="envelope__link">
+            <span class="envelope__link-icon">🔗</span>
+            Open Homework 7 Website
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Indicator Dots -->
+  <div class="indicator" aria-hidden="true">
+    <span class="indicator__dot indicator__dot--active" data-panel="foundation"></span>
+    <span class="indicator__dot" data-panel="archives"></span>
+    <span class="indicator__dot" data-panel="horizon"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
