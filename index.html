@@ -1,116 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pattern Memory Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maliha Farhan — Central Hub Portfolio</title>
+  <meta
+    name="description"
+    content="Interactive radial portfolio of Maliha Farhan — Foundation, Archives, and Story &amp; Horizon."
+  />
+
+  <!-- Google Fonts: Cinzel for headings & Plus Jakarta Sans for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- ===== START SCREEN ===== -->
-  <div id="start-screen" class="overlay">
-    <div class="overlay-card">
-      <h1>🧠 Pattern Memory</h1>
-      <p class="tagline">How sharp is your memory?</p>
-      <div class="high-score-display">
-        <span>🏆 High Score: <strong id="start-high-score">0</strong></span>
-      </div>
-      <div class="difficulty-picker">
-        <label for="difficulty">Difficulty</label>
-        <select id="difficulty">
-          <option value="easy">Easy (3 colors)</option>
-          <option value="medium" selected>Medium (4 colors)</option>
-          <option value="hard">Hard (6 colors)</option>
-        </select>
-      </div>
-      <button id="start-btn" class="btn-start">Start Game</button>
-    </div>
+  <!-- Subtle architectural radial rings behind the hub -->
+  <div class="ambient-orbits" aria-hidden="true">
+    <svg class="orbit-svg" viewBox="0 0 900 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="450" cy="450" r="245" stroke="currentColor" stroke-opacity="0.11" stroke-width="1" stroke-dasharray="4 8" />
+      <circle cx="450" cy="450" r="335" stroke="currentColor" stroke-opacity="0.07" stroke-width="1" />
+      <circle cx="450" cy="450" r="425" stroke="currentColor" stroke-opacity="0.05" stroke-width="1" stroke-dasharray="2 10" />
+    </svg>
   </div>
 
-  <!-- ===== TOP CONTROL BAR ===== -->
-  <header id="top-bar" class="hidden">
-    <div id="timer">00:15</div>
-    <div id="counter">
-      <span>Score: <strong id="score-value">0</strong></span>
-      <span class="round-label">Round <strong id="round-value">1</strong>/10</span>
-    </div>
-    <div id="controls">
-      <button id="pause-play" class="btn-icon" title="Pause / Resume">⏸️</button>
-      <button id="main-menu" class="btn-menu" title="Main Menu">☰ Menu</button>
-      <button id="quit" class="btn-quit" title="Quit">✕</button>
-    </div>
-  </header>
+  <!-- Central Hub & Radial Canvas (No top navbar or conventional menu) -->
+  <main class="radial-canvas" id="radial-canvas" data-active-chapter="foundation">
 
-  <!-- ===== MAIN GAME AREA ===== -->
-  <main id="game-area" class="hidden">
+    <!-- LEFT ORBITAL WING -->
+    <section class="panel-wing panel-wing--left" aria-label="Left story wing">
+      <!-- Panel 1 Left: Core Identity -->
+      <article
+        class="orbit-card is-active"
+        data-chapter-panel="foundation"
+        data-side="left"
+        aria-hidden="false"
+      >
+        <span class="card-eyebrow">Chapter I &middot; The Foundation</span>
+        <h1 class="card-heading">Maliha Farhan</h1>
+        <p class="card-lead">
+          Seventeen years old and anchored in <strong>Islam</strong>, building a life where quiet conviction,
+          gratitude, and intellectual ambition strengthen one another.
+        </p>
 
-    <!-- Phase label -->
-    <div id="phase-label">Memorize the pattern!</div>
+        <dl class="fact-grid">
+          <div class="fact-row">
+            <dt>Name</dt>
+            <dd>Maliha Farhan</dd>
+          </div>
+          <div class="fact-row">
+            <dt>Age</dt>
+            <dd>17 Years</dd>
+          </div>
+          <div class="fact-row">
+            <dt>Faith</dt>
+            <dd>Islam</dd>
+          </div>
+        </dl>
+      </article>
 
-    <!-- Sequence display (memorization phase) -->
-    <div id="sequence-display"></div>
+      <!-- Panel 2 Left: Honours & Craft -->
+      <article
+        class="orbit-card"
+        data-chapter-panel="archives"
+        data-side="left"
+        aria-hidden="true"
+      >
+        <span class="card-eyebrow">Chapter II &middot; The Archives</span>
+        <h2 class="card-heading">Honours &amp; Craft</h2>
+        <p class="card-lead">
+          Years of consistency inside and beyond the classroom—leading peers, articulating ideas, and writing with purpose.
+        </p>
 
-    <!-- User input (guessing phase) -->
-    <div id="input-container" class="hidden">
-      <p id="input-prompt">Reproduce the pattern:</p>
-      <div id="user-sequence-preview"></div>
-      <div id="color-buttons"></div>
-      <div id="input-actions">
-        <button id="undo-btn" class="btn-secondary" disabled>↩ Undo</button>
-        <button id="submit-btn" class="btn-submit" disabled>Submit</button>
+        <ul class="archive-list">
+          <li>
+            <strong>20+ High-Achiever Awards</strong>
+            <span>Sustained academic distinction across school terms.</span>
+          </li>
+          <li>
+            <strong>Head Girl</strong>
+            <span>Entrusted with student leadership, example, and responsibility.</span>
+          </li>
+          <li>
+            <strong>3rd Place in Creative Writing</strong>
+            <span>Honoured for expressive storytelling and clarity of voice.</span>
+          </li>
+          <li>
+            <strong>Debating &amp; Teaching Skills</strong>
+            <span>Persuasive public speaking paired with patient peer mentorship.</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Panel 3 Left: Origin Story -->
+      <article
+        class="orbit-card"
+        data-chapter-panel="horizon"
+        data-side="left"
+        aria-hidden="true"
+      >
+        <span class="card-eyebrow">Chapter III &middot; The Story</span>
+        <h2 class="card-heading">The Spark Within</h2>
+
+        <blockquote class="story-quote">
+          <p>
+            From my grandmother&rsquo;s words at my birth grew a lifelong resolve—not to shrink under doubt,
+            but to rise through character, learning, and quiet strength.
+          </p>
+        </blockquote>
+
+        <p class="card-body">
+          Every milestone since has carried one steady conviction: to prove that <strong>girls are equal to boys</strong>—not
+          by setting aside our values, but by standing tall within them and excelling across every arena we enter.
+        </p>
+      </article>
+    </section>
+
+    <!-- CENTERPIECE ANCHOR: Always Visible Botanical-Arch Portrait -->
+    <div class="centerpiece-stage">
+      <div
+        id="hub-centerpiece"
+        class="hub-centerpiece"
+        data-chapter="foundation"
+      >
+        <!-- Decorative botanical sprigs flanking the arch -->
+        <svg class="botanical-crest botanical-crest--top" viewBox="0 0 220 56" fill="none" aria-hidden="true">
+          <path d="M110 48C110 26 94 14 70 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          <path d="M110 48C110 26 126 14 150 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          <path d="M90 21C82 14 73 16 68 23C77 25 85 25 90 21Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.1" />
+          <path d="M130 21C138 14 147 16 152 23C143 25 135 25 130 21Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.1" />
+          <path d="M110 10C106 18 106 26 110 33C114 26 114 18 110 10Z" fill="#C85A32" fill-opacity="0.78" />
+        </svg>
+
+        <!-- Direct Portrait Button: Click to cycle chapters 1 -> 2 -> 3 -->
+        <button
+          type="button"
+          id="photo-cycle-btn"
+          class="arch-trigger"
+          aria-label="Maliha Farhan portrait. Click to cycle to the next chapter."
+        >
+          <span class="arch-outer-ring">
+            <span class="arch-inner-frame">
+              <img
+                src="maliha.jpg"
+                alt="Portrait of Maliha Farhan in hijab and glasses"
+                class="center-photo"
+                id="center-photo"
+              />
+            </span>
+          </span>
+        </button>
+
+        <!-- Orbital Emblem 1: Botanical Seal -> Panel 1 (Foundation) -->
+        <button
+          type="button"
+          class="orbital-emblem orbital-emblem--foundation is-active"
+          data-target="foundation"
+          aria-label="Jump to Chapter I: The Foundation"
+          aria-pressed="true"
+          title="I · The Foundation"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3C7.5 6.8 6 11.4 8 15.8C9.3 18.7 11 20.1 12 21C13 20.1 14.7 18.7 16 15.8C18 11.4 16.5 6.8 12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M12 7V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 12L15 9.5M12 14.8L9 12.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+          <span class="emblem-tag">I &middot; Foundation</span>
+        </button>
+
+        <!-- Orbital Emblem 2: Quill Seal -> Panel 2 (Archives) -->
+        <button
+          type="button"
+          class="orbital-emblem orbital-emblem--archives"
+          data-target="archives"
+          aria-label="Jump to Chapter II: The Archives"
+          aria-pressed="false"
+          title="II · The Archives"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M19.5 4.5C14.2 5 9.2 8.4 6.6 13.7L5 19L10.3 17.4C15.6 14.8 19 9.8 19.5 4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M5 19L12.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span class="emblem-tag">II &middot; Archives</span>
+        </button>
+
+        <!-- Orbital Emblem 3: Compass Seal -> Panel 3 (Story & Horizon) -->
+        <button
+          type="button"
+          class="orbital-emblem orbital-emblem--horizon"
+          data-target="horizon"
+          aria-label="Jump to Chapter III: The Story &amp; Horizon"
+          aria-pressed="false"
+          title="III · Story &amp; Horizon"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6" />
+            <polygon points="14.8,9.2 13.2,13.2 9.2,14.8 10.8,10.8" fill="currentColor" fill-opacity="0.24" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+          </svg>
+          <span class="emblem-tag">III &middot; Horizon</span>
+        </button>
+      </div>
+
+      <!-- Integrated Plinth Caption (Not a navbar) -->
+      <div class="hub-plinth" aria-live="polite">
+        <p class="plinth-chapter" id="plinth-chapter">I of III &mdash; The Foundation</p>
+        <p class="plinth-hint">Click portrait to turn page &middot; or choose a seal</p>
       </div>
     </div>
 
-    <!-- Round result flash -->
-    <div id="round-result" class="hidden">
-      <span id="result-icon"></span>
-      <span id="result-text"></span>
-    </div>
+    <!-- RIGHT ORBITAL WING -->
+    <section class="panel-wing panel-wing--right" aria-label="Right story wing">
+      <!-- Panel 1 Right: Education & Vision -->
+      <article
+        class="orbit-card is-active"
+        data-chapter-panel="foundation"
+        data-side="right"
+        aria-hidden="false"
+      >
+        <span class="card-eyebrow">Education &amp; Calling</span>
+        <h2 class="card-heading">Aspiring Software Engineer</h2>
+        <p class="card-lead">
+          Turning structured logic and thoughtful design into software that solves real problems.
+        </p>
+
+        <div class="timeline-stack">
+          <div class="milestone-item">
+            <span class="milestone-badge">O-Levels</span>
+            <div>
+              <h3>Nakhlah School</h3>
+              <p>Built core academic discipline, character, and leadership.</p>
+            </div>
+          </div>
+          <div class="milestone-item">
+            <span class="milestone-badge">A-Levels</span>
+            <div>
+              <h3>Heuser College</h3>
+              <p>Deepening analytical foundations toward software engineering.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 2 Right: Personal Dedication -->
+      <article
+        class="orbit-card"
+        data-chapter-panel="archives"
+        data-side="right"
+        aria-hidden="true"
+      >
+        <span class="card-eyebrow">Devotion at Home</span>
+        <h2 class="card-heading">Personal Dedication</h2>
+        <p class="card-lead">
+          Achievement means little without service to the people who stand beside you every day.
+        </p>
+
+        <ul class="archive-list">
+          <li>
+            <strong>Excel Data Support for Father</strong>
+            <span>Organizing spreadsheets and structured data with accuracy.</span>
+          </li>
+          <li>
+            <strong>University Assignment Aid for Mother</strong>
+            <span>Assisting with research, formatting, and academic coursework.</span>
+          </li>
+          <li>
+            <strong>Tutoring Younger Sister</strong>
+            <span>Guiding lessons patiently while nurturing confidence.</span>
+          </li>
+          <li>
+            <strong>Household Chores &amp; A-Levels</strong>
+            <span>Balancing daily home responsibilities seamlessly alongside studies.</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Panel 3 Right: Horizons & Homework 7 -->
+      <article
+        class="orbit-card"
+        data-chapter-panel="horizon"
+        data-side="right"
+        aria-hidden="true"
+      >
+        <span class="card-eyebrow">The Horizon &amp; Work</span>
+        <h2 class="card-heading">Courage in Motion</h2>
+
+        <ul class="horizon-pills" aria-label="Personal aspirations">
+          <li>Academic Excellence</li>
+          <li>Horse-Riding Observing Parda</li>
+          <li>Driving Independently</li>
+          <li>Supporting My Family</li>
+          <li>Studying Abroad</li>
+        </ul>
+
+        <p class="card-body">
+          Strength and modesty belong together—from the saddle while observing parda to independent roads,
+          global classrooms, and building a dependable future for my family.
+        </p>
+
+        <a
+          class="hw-link"
+          href="https://maliha-farhan.github.io/Heuser/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="hw-link-copy">
+            <span class="hw-link-label">Featured Project</span>
+            <span class="hw-link-title">Visit Homework 7 Website</span>
+          </span>
+          <span class="hw-link-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </article>
+    </section>
+
   </main>
 
-  <!-- ===== PAUSE OVERLAY ===== -->
-  <div id="pause-overlay" class="overlay hidden">
-    <div class="overlay-card">
-      <h2>⏸️ Paused</h2>
-      <p>Take your time.</p>
-      <button id="resume-btn" class="btn-primary">Resume</button>
-    </div>
-  </div>
-
-  <!-- ===== QUIT CONFIRM OVERLAY ===== -->
-  <div id="quit-overlay" class="overlay hidden">
-    <div class="overlay-card">
-      <h2>🚪 Quit Game?</h2>
-      <p>Your progress this round will be lost.</p>
-      <div class="confirm-actions">
-        <button id="quit-confirm" class="btn-quit-confirm">Yes, Quit</button>
-        <button id="quit-cancel" class="btn-secondary">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== END-GAME OVERLAY ===== -->
-  <div id="end-screen" class="overlay hidden">
-    <div class="overlay-card" id="end-card">
-      <h2 id="end-title">Game Over</h2>
-      <p id="end-feedback"></p>
-      <div class="end-stats">
-        <div class="stat-box">
-          <span class="stat-number" id="end-score">0</span>
-          <span class="stat-label">Final Score</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number" id="end-high">0</span>
-          <span class="stat-label">High Score</span>
-        </div>
-      </div>
-      <div id="new-high-score-badge" class="hidden">🎉 New High Score!</div>
-      <button id="play-again-btn" class="btn-start">Play Again</button>
-      <button id="menu-btn" class="btn-secondary">Main Menu</button>
-    </div>
-  </div>
-
   <script src="script.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,602 +1,855 @@
-/* ===================================================
-   Pattern Memory Game – style.css
-   Palette: pitch-black, dark-amethyst, porcelain,
-            salmon, burnt-peach
-   + Audio-synced visual feedback animations
-   =================================================== */
+/* ==========================================================================
+   Maliha Farhan — Central Hub & Radial Canvas Stylesheet
+   Palette: Deep Emerald (#1A3C34), Warm Terracotta (#C85A32), Muted Sand (#F4EFEA)
+   Typography: Cinzel (Headings) & Plus Jakarta Sans (Body)
+   ========================================================================== */
 
-/* ---------- Reset & Base ---------- */
-*, *::before, *::after {
+:root {
+  --emerald: #1A3C34;
+  --emerald-deep: #112822;
+  --emerald-soft: rgba(26, 60, 52, 0.12);
+  --terracotta: #C85A32;
+  --terracotta-warm: #D9724B;
+  --terracotta-soft: rgba(200, 90, 50, 0.14);
+  --sand: #F4EFEA;
+  --sand-elevated: rgba(255, 252, 248, 0.84);
+  --ink: #1F2E2A;
+  --ink-muted: #52625D;
+
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --arch-outer-radius: 50% 50% 42px 42px / 43% 43% 34px 34px;
+  --arch-inner-radius: 50% 50% 34px 34px / 43% 43% 26px 26px;
+
+  --transition-card: 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-hub: 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  /* ── Core Palette ── */
-  --bg:          #131200;
-  --surface:     #241e4e;
-  --surface-alt: #2f2862;
-  --text:        #fbfef9;
-  --text-dim:    #b0aec4;
-  --accent:      #e9806e;
-  --accent-alt:  #ec7357;
-  --accent-glow: rgba(233,128,110,.3);
-
-  --success:     #2ecc71;
-  --success-glow:rgba(46,204,113,.3);
-  --danger:      #e74c3c;
-  --danger-glow: rgba(231,76,60,.3);
-
-  --radius: 14px;
-  --transition: .3s ease;
-
-  /* ── Guessing Colors ── */
-  --gc-electric:  #00e5ff;
-  --gc-neon:      #ccff00;
-  --gc-hotpink:   #ff2d95;
-  --gc-white:     #ffffff;
-  --gc-volt:      #a855f7;
-  --gc-sunbeam:   #ffb300;
-}
-
-html { font-size: 16px; }
-
+html,
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  min-height: 100%;
+  background-color: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* ---------- Utility ---------- */
-.hidden { display: none !important; }
-
-/* ---------- Buttons (global) ---------- */
-button {
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-  font-size: .95rem;
-  transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
-}
-button:active { transform: scale(.95); }
-
-/* Click-feedback ripple (syncs with bubbly click sound) */
-button.click-flash {
-  animation: btnFlash .25s ease;
+body {
+  background-image:
+    radial-gradient(circle at 50% 48%, rgba(200, 90, 50, 0.085) 0%, rgba(244, 239, 234, 0.4) 36%, transparent 68%),
+    radial-gradient(circle at 18% 18%, rgba(26, 60, 52, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 82% 82%, rgba(200, 90, 50, 0.06) 0%, transparent 48%),
+    linear-gradient(160deg, #F7F3EE 0%, #F4EFEA 55%, #EDE5DC 100%);
+  position: relative;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-  padding: .75rem 2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  box-shadow: 0 4px 20px var(--accent-glow);
-}
-.btn-primary:hover { background: var(--accent-alt); }
-
-.btn-start {
-  background: var(--success);
-  color: var(--bg);
-  padding: .75rem 2rem;
-  border-radius: 50px;
-  font-weight: 700;
-  letter-spacing: .02em;
-  box-shadow: 0 4px 20px var(--success-glow);
-}
-.btn-start:hover { background: #27ae60; }
-
-.btn-submit {
-  background: var(--accent-alt);
-  color: var(--bg);
-  padding: .65rem 1.8rem;
-  border-radius: 50px;
-  font-weight: 600;
-  box-shadow: 0 4px 16px var(--accent-glow);
-}
-.btn-submit:hover { background: var(--accent); }
-.btn-submit:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: var(--surface-alt);
-  color: var(--text);
-  padding: .65rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 500;
-}
-.btn-secondary:hover { background: #3a3480; }
-.btn-secondary:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-.btn-icon {
-  background: var(--surface-alt);
-  color: var(--text);
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-}
-.btn-icon:hover { background: #3a3480; }
-
-.btn-menu {
-  background: var(--success);
-  color: var(--bg);
-  padding: .45rem 1rem;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: .85rem;
-  letter-spacing: .02em;
-  box-shadow: 0 3px 12px var(--success-glow);
-}
-.btn-menu:hover { background: #27ae60; }
-
-.btn-quit {
-  background: var(--danger);
-  color: #fff;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  box-shadow: 0 3px 12px var(--danger-glow);
-}
-.btn-quit:hover { background: #c0392b; }
-
-.btn-quit-confirm {
-  background: var(--danger);
-  color: #fff;
-  padding: .65rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  box-shadow: 0 4px 16px var(--danger-glow);
-}
-.btn-quit-confirm:hover { background: #c0392b; }
-
-.confirm-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1.2rem;
-}
-
-/* ===================================================
-   OVERLAYS
-   =================================================== */
-.overlay {
+/* Subtle architectural radial orbit rings centered behind the viewport */
+.ambient-orbits {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(19, 18, 0, .92);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  animation: fadeIn .35s ease;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--emerald);
+  overflow: hidden;
 }
 
-.overlay-card {
-  background: var(--surface);
-  border: 1px solid var(--surface-alt);
-  padding: 2.5rem 3rem;
-  border-radius: var(--radius);
-  text-align: center;
-  max-width: 440px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 40px var(--accent-glow);
-}
-.overlay-card h1 {
-  font-size: 2rem;
-  margin-bottom: .35rem;
-  color: var(--text);
-}
-.overlay-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: .5rem;
-  color: var(--text);
-}
-.overlay-card .tagline {
-  color: var(--text-dim);
-  margin-bottom: 1.5rem;
+.orbit-svg {
+  width: min(94vw, 940px);
+  height: min(94vw, 940px);
+  animation: slowOrbitSpin 90s linear infinite;
 }
 
-.high-score-display {
-  background: var(--surface-alt);
-  padding: .6rem 1.2rem;
-  border-radius: 50px;
-  display: inline-block;
-  font-size: .9rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid var(--accent);
+@keyframes slowOrbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.difficulty-picker {
-  display: flex;
-  flex-direction: column;
-  gap: .4rem;
-  margin-bottom: 1.8rem;
+/* ==========================================================================
+   Radial Canvas Layout — Locks Photo Strictly in Dead Center
+   ========================================================================== */
+
+.radial-canvas {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.25rem, 3vw, 3rem);
+  display: grid;
+  grid-template-columns: minmax(270px, 1fr) auto minmax(270px, 1fr);
+  place-items: center;
+  gap: clamp(1.4rem, 3.2vw, 3.4rem);
 }
-.difficulty-picker label {
-  font-size: .8rem;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--text-dim);
+
+/* ==========================================================================
+   Centerpiece Botanical-Arch Portrait Hub
+   ========================================================================== */
+
+.centerpiece-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  z-index: 3;
 }
-.difficulty-picker select {
-  background: var(--surface-alt);
-  color: var(--text);
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  padding: .55rem 1rem;
-  font-size: .95rem;
-  font-family: inherit;
-  text-align: center;
-  cursor: pointer;
+
+.hub-centerpiece {
+  position: relative;
+  width: clamp(210px, min(21vw, 31dvh), 292px);
+  aspect-ratio: 3 / 3.9;
+  display: block;
+  transition: transform var(--transition-hub);
+}
+
+.hub-centerpiece.is-shifting {
+  transform: scale(1.035);
+}
+
+/* Botanical sprig crowning the arch */
+.botanical-crest {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 4;
+  color: var(--emerald);
+  transition: color var(--transition-hub), transform var(--transition-hub);
+}
+
+.botanical-crest--top {
+  top: -30px;
+  width: 76%;
+  height: auto;
+}
+
+/* Clickable photo frame button */
+.arch-trigger {
   appearance: none;
-}
-.difficulty-picker select:focus {
-  outline: 2px solid var(--accent-alt);
-  outline-offset: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: block;
+  border-radius: var(--arch-outer-radius);
+  position: absolute;
+  inset: 0;
+  outline: none;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ===================================================
-   TOP BAR
-   =================================================== */
-#top-bar {
+.arch-trigger:hover {
+  transform: translateY(-3px) scale(1.012);
+}
+
+.arch-trigger:active {
+  transform: scale(0.988);
+}
+
+.arch-trigger:focus-visible {
+  box-shadow: 0 0 0 4px var(--sand), 0 0 0 7px var(--terracotta);
+}
+
+/* Double-layered Emerald & Terracotta Arch Border + Breathing Glow */
+.arch-outer-ring {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 9px;
+  border-radius: var(--arch-outer-radius);
+  border: 3px solid var(--emerald);
+  background: linear-gradient(155deg, rgba(255, 252, 248, 0.92), rgba(244, 239, 234, 0.78));
+  transition:
+    border-color var(--transition-hub),
+    background var(--transition-hub),
+    box-shadow var(--transition-hub);
+  animation: breathingGlowFoundation 4.8s ease-in-out infinite;
+}
+
+.arch-inner-frame {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--arch-inner-radius);
+  border: 2.5px solid var(--terracotta);
+  overflow: hidden;
+  background: linear-gradient(170deg, #21483E 0%, #16322B 60%, #2C201B 100%);
+  box-shadow: inset 0 0 0 2px rgba(26, 60, 52, 0.35);
+  transition: border-color var(--transition-hub);
+}
+
+.center-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 42% 35%;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), filter 450ms ease;
+}
+
+.arch-trigger:hover .center-photo {
+  transform: scale(1.03);
+}
+
+/* ==========================================================================
+   Chapter-Synced Centerpiece Visual States (data-chapter)
+   ========================================================================== */
+
+/* Chapter 1: Foundation */
+.hub-centerpiece[data-chapter="foundation"] .arch-outer-ring {
+  border-color: var(--emerald);
+  animation-name: breathingGlowFoundation;
+}
+
+.hub-centerpiece[data-chapter="foundation"] .arch-inner-frame {
+  border-color: var(--terracotta);
+}
+
+/* Chapter 2: Archives */
+.hub-centerpiece[data-chapter="archives"] .arch-outer-ring {
+  border-color: var(--terracotta);
+  animation-name: breathingGlowArchives;
+}
+
+.hub-centerpiece[data-chapter="archives"] .arch-inner-frame {
+  border-color: var(--emerald);
+}
+
+.hub-centerpiece[data-chapter="archives"] .botanical-crest {
+  color: var(--terracotta);
+  transform: translateX(-50%) scale(1.04);
+}
+
+/* Chapter 3: Story & Horizon */
+.hub-centerpiece[data-chapter="horizon"] .arch-outer-ring {
+  border-color: var(--emerald-deep);
+  background: linear-gradient(155deg, rgba(250, 241, 234, 0.96), rgba(235, 224, 214, 0.86));
+  animation-name: breathingGlowHorizon;
+}
+
+.hub-centerpiece[data-chapter="horizon"] .arch-inner-frame {
+  border-color: var(--terracotta-warm);
+}
+
+.hub-centerpiece[data-chapter="horizon"] .botanical-crest {
+  color: var(--emerald);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+@keyframes breathingGlowFoundation {
+  0%, 100% {
+    box-shadow:
+      0 14px 36px -8px rgba(26, 60, 52, 0.24),
+      0 0 0 1px rgba(200, 90, 50, 0.18),
+      0 0 26px 2px rgba(200, 90, 50, 0.16);
+  }
+  50% {
+    box-shadow:
+      0 18px 44px -6px rgba(26, 60, 52, 0.34),
+      0 0 0 6px rgba(200, 90, 50, 0.1),
+      0 0 42px 8px rgba(200, 90, 50, 0.26);
+  }
+}
+
+@keyframes breathingGlowArchives {
+  0%, 100% {
+    box-shadow:
+      0 14px 36px -8px rgba(200, 90, 50, 0.28),
+      0 0 0 1px rgba(26, 60, 52, 0.22),
+      0 0 28px 2px rgba(200, 90, 50, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 18px 46px -6px rgba(200, 90, 50, 0.38),
+      0 0 0 6px rgba(26, 60, 52, 0.12),
+      0 0 46px 10px rgba(200, 90, 50, 0.3);
+  }
+}
+
+@keyframes breathingGlowHorizon {
+  0%, 100% {
+    box-shadow:
+      0 14px 38px -8px rgba(17, 40, 34, 0.32),
+      0 0 0 2px rgba(200, 90, 50, 0.24),
+      0 0 30px 4px rgba(26, 60, 52, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 20px 50px -6px rgba(17, 40, 34, 0.4),
+      0 0 0 7px rgba(200, 90, 50, 0.15),
+      0 0 48px 10px rgba(200, 90, 50, 0.28);
+  }
+}
+
+/* ==========================================================================
+   Orbital Emblems (Interactive Frame-Mounted Seals — No Navbar)
+   ========================================================================== */
+
+.orbital-emblem {
+  position: absolute;
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--emerald);
+  background: #FAF6F1;
+  color: var(--emerald);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(26, 60, 52, 0.18), 0 0 0 3px rgba(244, 239, 234, 0.85);
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms ease,
+    border-color 260ms ease,
+    color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.orbital-emblem svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Exact geometric perimeter placement straddling the arch outline */
+.orbital-emblem--foundation {
+  top: 18%;
+  left: 9.3%;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-emblem--archives {
+  top: 18%;
+  left: 90.7%;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-emblem--horizon {
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-emblem:hover,
+.orbital-emblem:focus-visible {
+  outline: none;
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+  box-shadow: 0 8px 22px rgba(200, 90, 50, 0.28), 0 0 0 4px rgba(244, 239, 234, 0.95);
+}
+
+.orbital-emblem--foundation:hover,
+.orbital-emblem--foundation:focus-visible,
+.orbital-emblem--archives:hover,
+.orbital-emblem--archives:focus-visible,
+.orbital-emblem--horizon:hover,
+.orbital-emblem--horizon:focus-visible {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.orbital-emblem.is-active {
+  background: var(--terracotta);
+  border-color: var(--emerald);
+  color: var(--sand);
+  box-shadow:
+    0 8px 22px rgba(200, 90, 50, 0.34),
+    0 0 0 3px var(--sand),
+    0 0 18px rgba(200, 90, 50, 0.36);
+}
+
+/* Subtle floating tooltip label on hover/focus */
+.emblem-tag {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  white-space: nowrap;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  background: var(--emerald);
+  color: var(--sand);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 6px 14px rgba(17, 40, 34, 0.2);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.orbital-emblem--horizon .emblem-tag {
+  bottom: calc(100% + 10px);
+  top: auto;
+}
+
+.orbital-emblem:hover .emblem-tag,
+.orbital-emblem:focus-visible .emblem-tag {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Integrated Plinth Caption directly beneath the arch */
+.hub-plinth {
+  position: absolute;
+  top: calc(100% + 32px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 92vw;
+  text-align: center;
+  pointer-events: none;
+}
+
+.plinth-chapter {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--emerald);
+}
+
+.plinth-hint {
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   Orbiting Content Wings & Cards (Stacked in Same Grid Cell)
+   ========================================================================== */
+
+.panel-wing {
+  display: grid;
+  width: 100%;
+  max-width: 410px;
+  align-items: center;
+}
+
+.panel-wing--left {
+  justify-self: end;
+}
+
+.panel-wing--right {
+  justify-self: start;
+}
+
+.orbit-card {
+  grid-area: 1 / 1;
+  padding: clamp(1.35rem, 2vw, 1.85rem);
+  border-radius: 22px;
+  background: var(--sand-elevated);
+  border: 1px solid rgba(26, 60, 52, 0.14);
+  box-shadow:
+    0 18px 42px -18px rgba(26, 60, 52, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+
+  /* Default resting/hidden state pulled inward toward the central portrait */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-card),
+    transform var(--transition-card),
+    visibility 0s linear 460ms;
+}
+
+.orbit-card[data-side="left"] {
+  transform: translateX(30px) scale(0.96);
+}
+
+.orbit-card[data-side="right"] {
+  transform: translateX(-30px) scale(0.96);
+}
+
+/* Active visible state */
+.orbit-card.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  transition:
+    opacity var(--transition-card) 70ms,
+    transform var(--transition-card) 70ms,
+    visibility 0s linear 0s;
+}
+
+/* Leaving state slides inward toward the photo and fades out */
+.orbit-card.is-leaving {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transition:
+    opacity 280ms cubic-bezier(0.4, 0, 1, 1),
+    transform 280ms cubic-bezier(0.4, 0, 1, 1),
+    visibility 0s linear 280ms;
+}
+
+.orbit-card[data-side="left"].is-leaving {
+  transform: translateX(34px) scale(0.95);
+}
+
+.orbit-card[data-side="right"].is-leaving {
+  transform: translateX(-34px) scale(0.95);
+}
+
+/* Subtle top ornament line on each card */
+.orbit-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  width: 48px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--terracotta), var(--emerald));
+}
+
+/* ==========================================================================
+   Card Typography & Structured Elements
+   ========================================================================== */
+
+.card-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 0.45rem;
+}
+
+.card-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.32rem, 1.85vw, 1.72rem);
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--emerald);
+  margin-bottom: 0.75rem;
+}
+
+.card-lead,
+.card-body {
+  font-size: 0.935rem;
+  color: var(--ink);
+  line-height: 1.62;
+}
+
+.card-lead + *,
+.card-body + * {
+  margin-top: 1.05rem;
+}
+
+/* Panel 1 Fact Grid */
+.fact-grid {
+  display: grid;
+  gap: 0.55rem;
+  border-top: 1px solid rgba(26, 60, 52, 0.12);
+  padding-top: 0.85rem;
+}
+
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  background: rgba(244, 239, 234, 0.72);
+}
+
+.fact-row dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.fact-row dd {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--emerald);
+}
+
+/* Panel 1 Right Timeline Stack */
+.timeline-stack {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.milestone-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  padding: 0.72rem 0.85rem;
+  border-radius: 14px;
+  background: rgba(244, 239, 234, 0.78);
+  border: 1px solid rgba(26, 60, 52, 0.1);
+}
+
+.milestone-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--emerald);
+  color: var(--sand);
+  margin-top: 0.15rem;
+}
+
+.milestone-item h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--emerald);
+  margin-bottom: 0.15rem;
+}
+
+.milestone-item p {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.48;
+}
+
+/* Panel 2 Archive Lists */
+.archive-list {
+  list-style: none;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.archive-list li {
+  position: relative;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.archive-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 7px;
+  height: 7px;
+  background: var(--terracotta);
+  transform: rotate(45deg);
+  border-radius: 1.5px;
+}
+
+.archive-list strong {
+  font-size: 0.91rem;
+  font-weight: 700;
+  color: var(--emerald);
+}
+
+.archive-list span {
+  font-size: 0.835rem;
+  color: var(--ink-muted);
+  line-height: 1.45;
+}
+
+/* Panel 3 Story Quote & Horizon Pills */
+.story-quote {
+  position: relative;
+  padding: 0.85rem 1rem 0.85rem 1.15rem;
+  margin-bottom: 0.95rem;
+  border-left: 3px solid var(--terracotta);
+  border-radius: 0 14px 14px 0;
+  background: linear-gradient(90deg, rgba(200, 90, 50, 0.09), rgba(244, 239, 234, 0.55));
+}
+
+.story-quote p {
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--emerald-deep);
+  line-height: 1.58;
+}
+
+.horizon-pills {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
+}
+
+.horizon-pills li {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--emerald);
+  background: rgba(26, 60, 52, 0.08);
+  border: 1px solid rgba(26, 60, 52, 0.16);
+  padding: 0.3rem 0.68rem;
+  border-radius: 999px;
+}
+
+/* Homework 7 CTA Link */
+.hw-link {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .85rem 1.5rem;
-  background: var(--surface);
-  border-bottom: 2px solid var(--accent);
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  gap: 1rem;
+  padding: 0.82rem 1rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-deep) 100%);
+  color: var(--sand);
+  text-decoration: none;
+  border: 1.5px solid var(--terracotta);
+  box-shadow: 0 10px 24px -10px rgba(26, 60, 52, 0.48);
+  transition: transform 240ms ease, box-shadow 240ms ease, background 240ms ease;
 }
 
-#timer {
-  font-size: 1.4rem;
+.hw-link:hover,
+.hw-link:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -8px rgba(200, 90, 50, 0.42);
+  background: linear-gradient(135deg, var(--terracotta) 0%, #A94522 100%);
+}
+
+.hw-link-copy {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.hw-link-label {
+  font-size: 0.66rem;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  min-width: 70px;
-  color: var(--accent);
-  transition: color .2s ease;
-}
-#timer.warning {
-  color: var(--danger);
-  animation: pulse .6s ease infinite alternate;
-}
-
-/* Timer alarm visual: border glow + shake when timer expires */
-#timer.alarm-flash {
-  animation: timerAlarm 3s ease;
-  text-shadow: 0 0 12px var(--danger), 0 0 24px var(--danger);
-}
-
-#counter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .15rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-.round-label {
-  font-size: .75rem;
-  color: var(--text-dim);
-  font-weight: 400;
-}
-
-#controls {
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-}
-
-/* ===================================================
-   GAME AREA
-   =================================================== */
-#game-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  gap: 1.5rem;
-}
-
-#phase-label {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--accent);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: .06em;
-  animation: fadeIn .4s ease;
+  color: rgba(244, 239, 234, 0.78);
 }
 
-/* ---------- Sequence Display ---------- */
-#sequence-display {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-  max-width: 500px;
-  min-height: 90px;
-  padding: 1.8rem;
-  background: var(--surface);
-  border: 2px solid var(--surface-alt);
-  border-radius: var(--radius);
-  box-shadow: inset 0 0 30px rgba(36,30,78,.5), 0 8px 32px rgba(0,0,0,.4);
+.hw-link-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
-.seq-dot {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  animation: popIn .35s ease both;
-  transition: transform var(--transition);
-}
-.seq-dot:hover { transform: scale(1.08); }
-
-.seq-dot:nth-child(1)  { animation-delay: .05s; }
-.seq-dot:nth-child(2)  { animation-delay: .12s; }
-.seq-dot:nth-child(3)  { animation-delay: .19s; }
-.seq-dot:nth-child(4)  { animation-delay: .26s; }
-.seq-dot:nth-child(5)  { animation-delay: .33s; }
-.seq-dot:nth-child(6)  { animation-delay: .40s; }
-.seq-dot:nth-child(7)  { animation-delay: .47s; }
-.seq-dot:nth-child(8)  { animation-delay: .54s; }
-.seq-dot:nth-child(9)  { animation-delay: .61s; }
-.seq-dot:nth-child(10) { animation-delay: .68s; }
-
-/* ── Guessing color classes ── */
-.color-electric { background: var(--gc-electric); box-shadow: 0 4px 22px rgba(0,229,255,.5); }
-.color-neon     { background: var(--gc-neon);     box-shadow: 0 4px 22px rgba(204,255,0,.45); }
-.color-hotpink  { background: var(--gc-hotpink);  box-shadow: 0 4px 22px rgba(255,45,149,.45); }
-.color-white    { background: var(--gc-white);    box-shadow: 0 4px 22px rgba(255,255,255,.35); }
-.color-volt     { background: var(--gc-volt);     box-shadow: 0 4px 22px rgba(168,85,247,.45); }
-.color-sunbeam  { background: var(--gc-sunbeam);  box-shadow: 0 4px 22px rgba(255,179,0,.45); }
-
-/* ---------- Input Container ---------- */
-#input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-  animation: fadeIn .4s ease;
+.hw-link-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(244, 239, 234, 0.16);
+  font-size: 1.05rem;
+  transition: transform 240ms ease;
 }
 
-#input-prompt {
-  font-size: .95rem;
-  color: var(--text-dim);
+.hw-link:hover .hw-link-arrow {
+  transform: translate(2px, -2px);
 }
 
-#user-sequence-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  min-height: 56px;
-  padding: 1rem;
-  background: var(--surface);
-  border: 2px dashed var(--surface-alt);
-  border-radius: var(--radius);
-  min-width: 240px;
-  max-width: 500px;
-  transition: border-color var(--transition);
-}
-#user-sequence-preview:not(:empty) {
-  border-color: var(--accent);
+/* ==========================================================================
+   Responsive Design (Tablets & Mobile)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .radial-canvas {
+    grid-template-columns: minmax(230px, 1fr) auto minmax(230px, 1fr);
+    gap: 1.35rem;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .hub-centerpiece {
+    width: clamp(205px, 23vw, 245px);
+  }
 }
 
-.preview-dot {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  animation: popIn .25s ease both;
+@media (max-width: 880px) {
+  .radial-canvas {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    place-items: center;
+    padding: 2.5rem 1.15rem 3rem;
+    gap: 1.25rem;
+  }
+
+  .centerpiece-stage {
+    order: 1;
+    margin-top: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .hub-centerpiece {
+    width: clamp(210px, 56vw, 260px);
+  }
+
+  .hub-plinth {
+    position: static;
+    transform: none;
+    margin-top: 2.4rem;
+  }
+
+  .panel-wing--left {
+    order: 2;
+    justify-self: center;
+    max-width: 540px;
+  }
+
+  .panel-wing--right {
+    order: 3;
+    justify-self: center;
+    max-width: 540px;
+  }
+
+  .orbit-card[data-side="left"],
+  .orbit-card[data-side="right"] {
+    transform: translateY(-18px) scale(0.97);
+  }
+
+  .orbit-card.is-active {
+    transform: translateY(0) scale(1);
+  }
+
+  .orbit-card[data-side="left"].is-leaving,
+  .orbit-card[data-side="right"].is-leaving {
+    transform: translateY(-20px) scale(0.96);
+  }
 }
 
-#color-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-  max-width: 420px;
-}
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-svg,
+  .arch-outer-ring {
+    animation: none;
+  }
 
-.color-btn {
-  width: 62px;
-  height: 62px;
-  border-radius: 16px;
-  border: 3px solid rgba(255,255,255,.15);
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-}
-.color-btn:hover {
-  transform: scale(1.14);
-  border-color: #fff;
-}
-.color-btn:active {
-  transform: scale(.9);
-}
-
-#input-actions {
-  display: flex;
-  gap: .8rem;
-  margin-top: .5rem;
-}
-
-/* ---------- Round Result ---------- */
-#round-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .4rem;
-  animation: popIn .35s ease;
-}
-#result-icon { font-size: 2.8rem; }
-#result-text { font-size: 1.15rem; font-weight: 600; }
-#result-text.correct   { color: var(--success); }
-#result-text.incorrect { color: var(--danger); }
-
-/* ===================================================
-   END SCREEN
-   =================================================== */
-.end-stats {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin: 1.5rem 0;
-}
-.stat-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--surface-alt);
-  padding: 1rem 1.6rem;
-  border-radius: var(--radius);
-  min-width: 110px;
-  border: 1px solid var(--accent);
-}
-.stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-.stat-label {
-  font-size: .75rem;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-top: .2rem;
-}
-
-#new-high-score-badge {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--gc-sunbeam);
-  margin-bottom: 1rem;
-  animation: pulse .8s ease infinite alternate;
-}
-
-/* End screen celebratory glow (syncs with cheerful sound) */
-#end-card.celebrate {
-  animation: celebrateGlow 2s ease;
-}
-
-/* End screen disappointment subtle shake (syncs with sad sound) */
-#end-card.disappoint {
-  animation: disappointShake 2s ease;
-}
-
-.overlay-card .btn-start   { margin-bottom: .6rem; }
-.overlay-card .btn-primary { margin-bottom: .6rem; }
-.overlay-card .btn-secondary { display: block; margin: 0 auto; }
-
-/* ===================================================
-   ANIMATIONS
-   =================================================== */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes popIn {
-  0%   { opacity: 0; transform: scale(.5); }
-  70%  { transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pulse {
-  from { opacity: 1; }
-  to   { opacity: .55; }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%      { transform: translateX(-8px); }
-  40%      { transform: translateX(8px); }
-  60%      { transform: translateX(-5px); }
-  80%      { transform: translateX(5px); }
-}
-
-.shake { animation: shake .45s ease; }
-
-/* Button click flash — visual feedback synced to bubbly sound */
-@keyframes btnFlash {
-  0%   { box-shadow: 0 0 0 0 rgba(233,128,110,.6); }
-  50%  { box-shadow: 0 0 18px 6px rgba(233,128,110,.5); }
-  100% { box-shadow: 0 0 0 0 rgba(233,128,110,0); }
-}
-
-/* Timer alarm visual — border glow + shake for 3s */
-@keyframes timerAlarm {
-  0%, 100% { text-shadow: none; transform: translateX(0); }
-  10%      { transform: translateX(-4px); }
-  20%      { transform: translateX(4px); text-shadow: 0 0 16px var(--danger); }
-  30%      { transform: translateX(-3px); }
-  40%      { transform: translateX(3px); text-shadow: 0 0 20px var(--danger); }
-  50%      { transform: translateX(0); text-shadow: 0 0 12px var(--danger); }
-  70%      { text-shadow: 0 0 8px var(--danger); }
-}
-
-/* Celebratory glow — synced to cheerful end-game sound */
-@keyframes celebrateGlow {
-  0%   { box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 rgba(46,204,113,0); }
-  30%  { box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 50px rgba(46,204,113,.5); }
-  60%  { box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 60px rgba(255,179,0,.4); }
-  100% { box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 40px var(--accent-glow); }
-}
-
-/* Disappointment shake — synced to sad end-game sound */
-@keyframes disappointShake {
-  0%, 100% { transform: translateY(0); }
-  15%      { transform: translateY(-4px); }
-  30%      { transform: translateY(3px); }
-  45%      { transform: translateY(-2px); }
-  60%      { transform: translateY(0); }
-}
-
-/* ===================================================
-   RESPONSIVE
-   =================================================== */
-@media (max-width: 600px) {
-  #top-bar { padding: .65rem .8rem; }
-  #timer   { font-size: 1.1rem; }
-  #counter { font-size: .9rem; }
-
-  .overlay-card { padding: 2rem 1.5rem; }
-  .overlay-card h1 { font-size: 1.5rem; }
-
-  .seq-dot    { width: 50px; height: 50px; border-radius: 12px; }
-  .color-btn  { width: 50px; height: 50px; border-radius: 12px; }
-  .preview-dot { width: 40px; height: 40px; border-radius: 10px; }
-
-  #sequence-display { gap: 10px; padding: 1rem; }
-  #color-buttons    { gap: 10px; }
-  .end-stats        { flex-direction: column; align-items: center; gap: 1rem; }
-
-  .btn-menu { padding: .4rem .7rem; font-size: .78rem; }
-  .btn-quit { width: 36px; height: 36px; font-size: 1.1rem; }
-}
-
-@media (max-width: 380px) {
-  .seq-dot   { width: 42px; height: 42px; }
-  .color-btn { width: 44px; height: 44px; }
+  .orbit-card,
+  .hub-centerpiece,
+  .arch-trigger,
+  .orbital-emblem {
+    transition-duration: 120ms;
+  }
 }
