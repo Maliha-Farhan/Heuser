@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Memory Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!--
+    OFFLINE NOTE: nothing here loads from the network. Styling is the local
+    style.css, logic is the local script.js, and all four sounds (bubbly click,
+    3s timer beep, cheerful, disappointing) are synthesized in script.js with the
+    Web Audio API, so there are no audio files or CDNs to host.
+  -->
+
+  <!-- ===== START SCREEN ===== -->
+  <div id="start-screen" class="overlay">
+    <div class="overlay-card">
+      <h1>🧠 Pattern Memory</h1>
+      <p class="tagline">How sharp is your memory?</p>
+      <!-- Saved game (shown only when progress was saved) -->
+      <div id="resume-panel" class="resume-panel hidden">
+        <p id="resume-info"></p>
+        <div class="resume-actions">
+          <button id="resume-saved-btn" class="btn-primary">Resume Game</button>
+          <button id="discard-saved-btn" class="btn-secondary">Discard</button>
+        </div>
+      </div>
+
+      <!-- Stage selection -->
+      <fieldset class="stage-picker">
+        <legend>Choose a stage</legend>
+        <div class="stage-cards" role="radiogroup" aria-label="Stage">
+          <button type="button" class="stage-card" role="radio" aria-checked="false" data-stage="easy">
+            <span class="stage-name">Easy</span>
+            <span class="stage-dots" aria-hidden="true"><i class="color-electric"></i><i class="color-hotpink"></i><i class="color-neon"></i></span>
+            <span class="stage-info">3 colors</span>
+            <span class="stage-best">🏆 <strong id="best-easy">0</strong></span>
+          </button>
+          <button type="button" class="stage-card" role="radio" aria-checked="true" data-stage="medium">
+            <span class="stage-name">Medium</span>
+            <span class="stage-dots" aria-hidden="true"><i class="color-electric"></i><i class="color-hotpink"></i><i class="color-neon"></i><i class="color-sunbeam"></i></span>
+            <span class="stage-info">4 colors</span>
+            <span class="stage-best">🏆 <strong id="best-medium">0</strong></span>
+          </button>
+          <button type="button" class="stage-card" role="radio" aria-checked="false" data-stage="hard">
+            <span class="stage-name">Hard</span>
+            <span class="stage-dots" aria-hidden="true"><i class="color-electric"></i><i class="color-hotpink"></i><i class="color-neon"></i><i class="color-sunbeam"></i><i class="color-volt"></i><i class="color-white"></i></span>
+            <span class="stage-info">6 colors</span>
+            <span class="stage-best">🏆 <strong id="best-hard">0</strong></span>
+          </button>
+        </div>
+      </fieldset>
+      <button id="start-btn" class="btn-start">Start New Game</button>
+    </div>
+  </div>
+
+  <!-- ===== TOP CONTROL BAR ===== -->
+  <header id="top-bar" class="hidden">
+    <div id="timer">00:15</div>
+    <div id="counter">
+      <span>Score: <strong id="score-value">0</strong></span>
+      <span class="round-label">Round <strong id="round-value">1</strong>/10</span>
+    </div>
+    <div id="controls">
+      <button id="pause-play" class="btn-icon" title="Pause / Resume">⏸️</button>
+      <button id="main-menu" class="btn-menu" title="Main Menu">☰ Menu</button>
+      <button id="quit" class="btn-quit" title="Quit">✕</button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN GAME AREA ===== -->
+  <main id="game-area" class="hidden">
+
+    <!-- Phase label -->
+    <div id="phase-label">Memorize the pattern!</div>
+
+    <!-- Sequence display (memorization phase) -->
+    <div id="sequence-display"></div>
+
+    <!-- User input (guessing phase) -->
+    <div id="input-container" class="hidden">
+      <p id="input-prompt">Reproduce the pattern:</p>
+      <div id="user-sequence-preview"></div>
+      <div id="color-buttons"></div>
+      <div id="input-actions">
+        <button id="undo-btn" class="btn-secondary" disabled>↩ Undo</button>
+        <button id="submit-btn" class="btn-submit" disabled>Submit</button>
+      </div>
+    </div>
+
+    <!-- Round result flash -->
+    <div id="round-result" class="hidden">
+      <span id="result-icon"></span>
+      <span id="result-text"></span>
+    </div>
+  </main>
+
+  <!-- ===== PAUSE OVERLAY ===== -->
+  <div id="pause-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <h2>⏸️ Paused</h2>
+      <p>Take your time.</p>
+      <button id="resume-btn" class="btn-primary">Resume</button>
+    </div>
+  </div>
+
+  <!-- ===== QUIT CONFIRM OVERLAY ===== -->
+  <div id="quit-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <h2>🚪 Quit Game?</h2>
+      <p>This game will end and your score so far will be final.</p>
+      <div class="confirm-actions">
+        <button id="quit-confirm" class="btn-quit-confirm">Yes, Quit</button>
+        <button id="quit-cancel" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== END-GAME OVERLAY ===== -->
+  <div id="end-screen" class="overlay hidden">
+    <div class="overlay-card" id="end-card">
+      <h2 id="end-title">Game Over</h2>
+      <p id="end-feedback"></p>
+      <div class="end-stats">
+        <div class="stat-box">
+          <span class="stat-number" id="end-score">0</span>
+          <span class="stat-label">Final Score</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="end-high">0</span>
+          <span class="stat-label" id="end-high-label">Stage Best</span>
+        </div>
+      </div>
+      <div id="new-high-score-badge" class="hidden">🎉 New High Score!</div>
+      <div class="hs-board">
+        <h3>High scores</h3>
+        <div class="hs-row">
+          <div class="hs-cell" data-stage="easy"><span class="hs-label">Easy</span><span class="hs-value" id="hs-end-easy">0</span></div>
+          <div class="hs-cell" data-stage="medium"><span class="hs-label">Medium</span><span class="hs-value" id="hs-end-medium">0</span></div>
+          <div class="hs-cell" data-stage="hard"><span class="hs-label">Hard</span><span class="hs-value" id="hs-end-hard">0</span></div>
+        </div>
+      </div>
+      <button id="play-again-btn" class="btn-start">Play Again</button>
+      <button id="menu-btn" class="btn-secondary">Main Menu</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
