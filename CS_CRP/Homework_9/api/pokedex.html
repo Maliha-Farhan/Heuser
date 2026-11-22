@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KANTO RESEARCH LAB // POKÉ-DEX HOLOCRON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='pokedex/style.css') }}" />
+  <style>
+    .back-home-btn {
+      position: fixed;
+      top: 12px;
+      left: 14px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(14, 20, 27, 0.85);
+      color: #00ffcc;
+      border: 1px solid #00ffcc44;
+      padding: 6px 14px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .back-home-btn:hover {
+      background: #00ffcc;
+      color: #050b11;
+      box-shadow: 0 0 16px rgba(0, 255, 204, 0.6);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <a class="back-home-btn" href="/">◀ Library Home</a>
+
+  <!-- ═══════════════ TERMINAL HEADER ═══════════════ -->
+  <header class="terminal-header">
+    <div class="header-brand">
+      <span class="brand-icon">◈</span>
+      <h1>KANTO RESEARCH LAB <span class="brand-sep">//</span> POKÉ-DEX HOLOCRON</h1>
+      <span class="brand-icon">◈</span>
+    </div>
+
+    <div class="controls-deck">
+      <div class="search-group">
+        <input
+          type="text"
+          id="pokemon-search-input"
+          placeholder="Enter name or ID…"
+          autocomplete="off"
+        />
+        <button id="search-btn" aria-label="Search">⏎</button>
+      </div>
+
+      <div class="filter-group">
+        <select id="habitat-select">
+          <option value="">— Habitat —</option>
+          <option value="cave">Cave</option>
+          <option value="forest">Forest</option>
+          <option value="grassland">Grassland</option>
+          <option value="mountain">Mountain</option>
+          <option value="rare">Rare</option>
+          <option value="rough-terrain">Rough Terrain</option>
+          <option value="sea">Sea</option>
+          <option value="urban">Urban</option>
+          <option value="waters-edge">Water's Edge</option>
+        </select>
+      </div>
+
+      <div class="nav-group">
+        <button id="prev-btn" aria-label="Previous Pokémon">◀ PREV</button>
+        <button id="random-btn" aria-label="Random Pokémon">⟐ RNG</button>
+        <button id="next-btn" aria-label="Next Pokémon">NEXT ▶</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════ MAIN STAGE ═══════════════ -->
+  <main class="holocron-stage">
+    <!-- ——— Loading Overlay ——— -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="spinner"></div>
+      <p>ACCESSING POKÉDEX DATABASE…</p>
+    </div>
+
+    <!-- ——— 3-D Holographic Trading Card ——— -->
+    <section class="card-wrapper" id="card-wrapper">
+      <div class="trading-card" id="card-container">
+        <div class="card-inner">
+          <div class="card-top-bar">
+            <span class="pk-id-tag" id="pk-id">#025</span>
+            <span class="pk-rarity">★ GEN I</span>
+          </div>
+
+          <div class="card-portrait">
+            <img
+              id="pk-img"
+              src="{{ url_for('static', filename='pokedex/sample_pokemon.svg') }}"
+              alt="Pokémon artwork"
+              draggable="false"
+            />
+          </div>
+
+          <h2 class="pk-name" id="pk-name">PIKACHU</h2>
+
+          <div class="pk-types" id="pk-types">
+            <!-- type pills injected by JS -->
+          </div>
+
+          <div class="card-attributes">
+            <div class="attr">
+              <span class="attr-label">HT</span>
+              <span class="attr-value" id="pk-height">0.4 m</span>
+            </div>
+            <div class="attr">
+              <span class="attr-label">WT</span>
+              <span class="attr-value" id="pk-weight">6.0 kg</span>
+            </div>
+            <div class="attr">
+              <span class="attr-label">XP</span>
+              <span class="attr-value" id="pk-xp">112</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Stat & Synergy Matrix ——— -->
+    <section class="matrix-deck">
+      <h3 class="matrix-title">⟁ STAT MATRIX</h3>
+
+      <div class="stat-bars">
+        <div class="stat-row">
+          <span class="stat-label">HP</span>
+          <div class="stat-track"><div class="stat-fill stat-hp" id="bar-hp"></div></div>
+          <span class="stat-num" id="num-hp">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">ATK</span>
+          <div class="stat-track"><div class="stat-fill stat-atk" id="bar-atk"></div></div>
+          <span class="stat-num" id="num-atk">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">DEF</span>
+          <div class="stat-track"><div class="stat-fill stat-def" id="bar-def"></div></div>
+          <span class="stat-num" id="num-def">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">SPD</span>
+          <div class="stat-track"><div class="stat-fill stat-spd" id="bar-spd"></div></div>
+          <span class="stat-num" id="num-spd">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">S.ATK</span>
+          <div class="stat-track"><div class="stat-fill stat-satk" id="bar-satk"></div></div>
+          <span class="stat-num" id="num-satk">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">S.DEF</span>
+          <div class="stat-track"><div class="stat-fill stat-sdef" id="bar-sdef"></div></div>
+          <span class="stat-num" id="num-sdef">0</span>
+        </div>
+      </div>
+
+      <h3 class="matrix-title">⟁ ABILITIES</h3>
+      <ul id="ability-list" class="ability-list">
+        <!-- populated by JS -->
+      </ul>
+
+      <!-- ——— Battle Simulator ——— -->
+      <div class="battle-sim">
+        <h3 class="matrix-title">⚔ TYPE MATCH-UP SYNERGY</h3>
+        <div class="battle-controls">
+          <select id="opponent-type" class="battle-select">
+            <option value="">— Opponent Type —</option>
+            <option value="normal">Normal</option>
+            <option value="fire">Fire</option>
+            <option value="water">Water</option>
+            <option value="electric">Electric</option>
+            <option value="grass">Grass</option>
+            <option value="ice">Ice</option>
+            <option value="fighting">Fighting</option>
+            <option value="poison">Poison</option>
+            <option value="ground">Ground</option>
+            <option value="flying">Flying</option>
+            <option value="psychic">Psychic</option>
+            <option value="bug">Bug</option>
+            <option value="rock">Rock</option>
+            <option value="ghost">Ghost</option>
+            <option value="dragon">Dragon</option>
+            <option value="dark">Dark</option>
+            <option value="steel">Steel</option>
+            <option value="fairy">Fairy</option>
+          </select>
+          <button id="battle-btn" class="battle-go">ANALYZE</button>
+        </div>
+        <div id="battle-result" class="battle-result"></div>
+      </div>
+
+      <!-- ——— Energy-Matrix Power Gauge ——— -->
+      <div class="power-gauge-section">
+        <h3 class="matrix-title">⚡ ENERGY-MATRIX POWER GAUGE</h3>
+        <div class="gauge-wrapper">
+          <input
+            type="range"
+            id="power-gauge"
+            min="0"
+            max="255"
+            value="0"
+            class="power-slider"
+          />
+          <div class="gauge-readout">
+            <span id="gauge-label">TOTAL POWER</span>
+            <span id="gauge-value" class="gauge-num">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="terminal-footer">
+    <span class="status-led" id="status-led"></span>
+    <span id="status-text">SYSTEM READY</span>
+    <span class="footer-sep">|</span>
+    <a href="https://pokeapi.co/" target="_blank" rel="noopener">Powered by PokéAPI</a>
+    <span class="footer-sep">|</span>
+    <span id="offline-indicator" class="offline-tag hidden">⚠ OFFLINE</span>
+    <span>GEN I CLASSIC — 151 SPECIMENS</span>
+  </footer>
+
+  <script src="{{ url_for('static', filename='pokedex/script.js') }}" defer></script>
+</body>
+</html>
